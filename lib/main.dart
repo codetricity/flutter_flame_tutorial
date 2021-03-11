@@ -18,6 +18,10 @@ class MyGame extends BaseGame with DoubleTapDetector {
   @override
   Future<void> onLoad() async {
     print('loading assets');
+    var background = SpriteComponent()
+      ..sprite = await loadSprite('background.png')
+      ..size = size;
+    add(background);
     boy
       ..sprite = await loadSprite('boy.png')
       ..size = Vector2(200.0, 200.0)
