@@ -14,14 +14,26 @@ class MyGame extends BaseGame with DoubleTapDetector {
   String direction = 'down';
   SpriteAnimationComponent girlAnimation = SpriteAnimationComponent();
   double speed = 2.0;
+  Sprite platformSprite;
 
   @override
   Future<void> onLoad() async {
     print('loading assets');
-    var background = SpriteComponent()
+
+    SpriteComponent background = SpriteComponent()
       ..sprite = await loadSprite('background.png')
       ..size = size;
     add(background);
+
+    platformSprite = await loadSprite('platform.png');
+
+    SpriteComponent platform = SpriteComponent()
+      ..sprite = platformSprite
+      ..size = Vector2(170, 40)
+      ..x = 0
+      ..y = 200;
+    add(platform);
+
     boy
       ..sprite = await loadSprite('boy.png')
       ..size = Vector2(200.0, 200.0)
