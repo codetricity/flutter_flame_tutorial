@@ -9,7 +9,7 @@ void main() {
 }
 
 class MyGame extends BaseGame with DoubleTapDetector {
-  SpriteComponent girl = SpriteComponent();
+  SpriteComponent boy = SpriteComponent();
   bool running = true;
   String direction = 'down';
   SpriteAnimationComponent girlAnimation = SpriteAnimationComponent();
@@ -18,12 +18,12 @@ class MyGame extends BaseGame with DoubleTapDetector {
   @override
   Future<void> onLoad() async {
     print('loading assets');
-    girl
-      ..sprite = await loadSprite('girl.png')
-      ..size = Vector2(100.0, 100.0)
+    boy
+      ..sprite = await loadSprite('boy.png')
+      ..size = Vector2(200.0, 200.0)
       ..x = 150
-      ..y = 50;
-    // add(girl);
+      ..y = 600;
+    add(boy);
 
     var spriteSheet = await images.load('girl_spritesheet.png');
     final spriteSize = Vector2(152 * 1.4, 142 * 1.4);
