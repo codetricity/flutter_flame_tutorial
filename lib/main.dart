@@ -1,3 +1,6 @@
+import 'dart:ui' as ui;
+
+import 'package:flame/geometry.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/gestures.dart';
 import 'package:flame/game.dart';
@@ -8,11 +11,11 @@ void main() {
   runApp(GameWidget(game: MyGame()));
 }
 
-class MyGame extends BaseGame with DoubleTapDetector {
-  SpriteComponent boy = SpriteComponent();
+class MyGame extends BaseGame with DoubleTapDetector, HasCollidables {
+  Boy boy = Boy();
   bool running = true;
   String direction = 'down';
-  SpriteAnimationComponent girlAnimation = SpriteAnimationComponent();
+  Girl girlAnimation = Girl();
   double speed = 2.0;
   Sprite platformSprite;
 
@@ -45,11 +48,10 @@ class MyGame extends BaseGame with DoubleTapDetector {
     final spriteSize = Vector2(152 * 1.4, 142 * 1.4);
     SpriteAnimationData spriteData = SpriteAnimationData.sequenced(
         amount: 9, stepTime: 0.03, textureSize: Vector2(152.0, 142.0));
-    girlAnimation =
-        SpriteAnimationComponent.fromFrameData(spriteSheet, spriteData)
-          ..x = 150
-          ..y = 30
-          ..size = spriteSize;
+    girlAnimation = Girl.fromFrameData(spriteSheet, spriteData)
+      ..x = 150
+      ..y = 30
+      ..size = spriteSize;
     add(girlAnimation);
   }
 
@@ -82,5 +84,38 @@ class MyGame extends BaseGame with DoubleTapDetector {
       resumeEngine();
     }
     running = !running;
+  }
+}
+
+class Boy extends SpriteComponent with Hitbox, Collidable {
+  Boy({
+    Vector2 position,
+    Vector2 size,
+  }) : super(position: position, size: size) {
+    debugMode = true;
+    addShape(HitboxRectangle());
+  }
+
+  @override
+  void onCollision(Set<Vector2> points, Collidable other) {
+    // TODO: implement onCollision
+    super.onCollision(points, other);
+    print('hit');
+  }
+}
+
+class Girl extends SpriteAnimationComponent with Hitbox, Collidable {
+  Girl({Vector2 position, Vector2 size})
+      : super(position: position, size: size);
+
+  Girl.fromFrameData(
+    ui.Image image,
+    SpriteAnimationData data, {
+    Vector2 position,
+    Vector2 size,
+  }) : super(position: position, size: size) {
+    animation = SpriteAnimation.fromFrameData(image, data);
+    debugMode = true;
+    addShape(HitboxRectangle());
   }
 }
