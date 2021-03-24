@@ -5,6 +5,10 @@ import 'package:flame/gestures.dart';
 import 'package:flame/game.dart';
 import 'package:flame/components.dart';
 
+import 'boy.dart';
+import 'girl.dart';
+import 'platform.dart';
+
 void main() {
   print('starting from main');
   runApp(GameWidget(game: MyGame()));
@@ -29,12 +33,15 @@ class MyGame extends BaseGame with DoubleTapDetector, HasCollidables {
 
     platformSprite = await loadSprite('platform.png');
 
-    SpriteComponent platform = SpriteComponent()
-      ..sprite = platformSprite
-      ..size = Vector2(170, 40)
-      ..x = 0
-      ..y = 200;
+    Platform platform =
+        Platform(position: Vector2(0, 200), size: Vector2(170, 40))
+          ..sprite = platformSprite;
     add(platform);
+
+    Platform platform2 =
+        Platform(position: Vector2(220, 400), size: Vector2(170, 40))
+          ..sprite = platformSprite;
+    add(platform2);
 
     boy
       ..sprite = await loadSprite('boy.png')
@@ -83,40 +90,5 @@ class MyGame extends BaseGame with DoubleTapDetector, HasCollidables {
       resumeEngine();
     }
     running = !running;
-  }
-}
-
-class Boy extends SpriteComponent with Hitbox, Collidable {
-  Boy({
-    Vector2 position,
-    Vector2 size,
-  }) : super(position: position, size: size) {
-    // debugMode = true;
-    addShape(HitboxRectangle());
-  }
-
-  @override
-  void onCollision(Set<Vector2> points, Collidable other) {
-    super.onCollision(points, other);
-    print('Hi, I want to be friends');
-    // remove();
-  }
-}
-
-class Girl extends SpriteAnimationComponent with Hitbox, Collidable {
-  Girl({
-    Vector2 position,
-    Vector2 size,
-  }) : super(position: position, size: size);
-
-  Girl.fromFrameData(
-    ui.Image image,
-    SpriteAnimationData data, {
-    Vector2 position,
-    Vector2 size,
-  }) : super(position: position, size: size) {
-    animation = SpriteAnimation.fromFrameData(image, data);
-    // debugMode = true;
-    addShape(HitboxRectangle());
   }
 }
