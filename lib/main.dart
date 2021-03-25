@@ -21,6 +21,28 @@ class MyGame extends BaseGame with DoubleTapDetector, HasCollidables {
   Girl girlAnimation = Girl();
   double speed = 2.0;
   Sprite platformSprite;
+  double characterScale = 0.5;
+
+  void initPlatform(Sprite sprite, screenSize) {
+    for (var i = 1; i < 11; i++) {
+      var x = 0.0;
+      Anchor anchor = Anchor.centerLeft;
+
+      if (i % 2 == 0) {
+        x = 0;
+        anchor = Anchor.centerLeft;
+      } else {
+        x = screenSize[0];
+        anchor = Anchor.centerRight;
+      }
+      Platform platform = Platform(
+          position: Vector2(x, (i * size[1] / 12.0) + 50),
+          size: Vector2(170 * .7, 40 * .7))
+        ..anchor = anchor
+        ..sprite = sprite;
+      add(platform);
+    }
+  }
 
   @override
   Future<void> onLoad() async {
@@ -32,26 +54,18 @@ class MyGame extends BaseGame with DoubleTapDetector, HasCollidables {
     add(background);
 
     platformSprite = await loadSprite('platform.png');
-
-    Platform platform =
-        Platform(position: Vector2(0, 200), size: Vector2(170, 40))
-          ..sprite = platformSprite;
-    add(platform);
-
-    Platform platform2 =
-        Platform(position: Vector2(220, 400), size: Vector2(170, 40))
-          ..sprite = platformSprite;
-    add(platform2);
+    initPlatform(platformSprite, size);
 
     boy
       ..sprite = await loadSprite('boy.png')
-      ..size = Vector2(200.0, 200.0)
-      ..x = 150
-      ..y = 600;
+      ..size = Vector2(200.0 * characterScale, 200.0 * characterScale)
+      ..anchor = Anchor.bottomRight
+      ..position = size;
+
     add(boy);
 
     var spriteSheet = await images.load('girl_spritesheet.png');
-    final spriteSize = Vector2(152 * 1.4, 142 * 1.4);
+    final spriteSize = Vector2(152 * characterScale, 142 * characterScale);
     SpriteAnimationData spriteData = SpriteAnimationData.sequenced(
         amount: 9, stepTime: 0.03, textureSize: Vector2(152.0, 142.0));
     girlAnimation = Girl.fromFrameData(spriteSheet, spriteData)
