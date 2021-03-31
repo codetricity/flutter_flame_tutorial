@@ -1,5 +1,3 @@
-import 'dart:ui' as ui;
-import 'package:flame/geometry.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/gestures.dart';
 import 'package:flame/game.dart';
